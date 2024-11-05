@@ -2,9 +2,11 @@ package store;
 
 import store.util.FileLoader;
 import store.util.Loader;
+import store.view.InputView;
 import store.view.OutputView;
 
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -15,5 +17,6 @@ public class Application {
         List<Product> products = Loader.loadProducts(FileLoader.loadFile(productFilePath), promotions);
 
         OutputView.printProducts(products);
+        Map<String, Integer> buyingItems = InputView.readItem();
     }
 }
