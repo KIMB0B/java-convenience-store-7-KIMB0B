@@ -63,7 +63,6 @@ public class Application {
             return order;
         }
         Order order = new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
-        // sellProduct(order, matchProducts.get(0).getName());
         return order;
     }
 
@@ -83,15 +82,5 @@ public class Application {
                 }
             }
         }
-//        int promotionQuantity = order.countPromotionQuantity();
-//        int nonePromotionQuantity = order.countNonePromotionQuantity();
-//        for (Product product : products) {
-//            if (product.getName().equals(productName) && product.getPromotion() == null) {
-//                product.sell(nonePromotionQuantity);
-//            }
-//            if (product.getName().equals(productName) && product.getPromotion() != null) {
-//                product.sell(promotionQuantity);
-//            }
-//        }
     }
 }
