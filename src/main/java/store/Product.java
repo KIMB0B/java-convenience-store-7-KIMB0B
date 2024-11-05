@@ -3,7 +3,7 @@ package store;
 public class Product {
     private final String name;
     private final int price;
-    private final int quantity;
+    private int quantity;
     private final Promotion promotion;
 
     public Product(String name, int price, int quantity, Promotion promotion) {
@@ -27,5 +27,13 @@ public class Product {
 
     public Promotion getPromotion() {
         return promotion;
+    }
+
+    public boolean sell(int quantity) {
+        if (this.quantity < quantity) {
+            return false;
+        }
+        this.quantity -= quantity;
+        return true;
     }
 }

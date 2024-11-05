@@ -26,13 +26,6 @@ public class Loader {
             products.add(new Product(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion));
         }
 
-        products.sort((p1, p2) -> {
-            if (p1.getName().equals(p2.getName()) && p1.getPromotion() == null) {
-                return 1;
-            }
-            return p1.getName().compareTo(p2.getName());
-        });
-
         return products;
     }
 }

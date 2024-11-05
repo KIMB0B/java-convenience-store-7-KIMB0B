@@ -30,6 +30,8 @@ public class Application {
 
             OutputView.printReceipt(orders);
 
+            sellProduct(orders);
+
             oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
         }
     }
@@ -52,8 +54,44 @@ public class Application {
 
     public static Order setOrder(List<Product> matchProducts, int quantity, boolean isMembership) {
         if (matchProducts.size() == 1) {
-            return new Order(matchProducts.getFirst(), quantity, isMembership);
+            Order order = new Order(matchProducts.get(0), quantity, isMembership);
+            for (Product product : products) {
+                if (product.getName().equals(matchProducts.get(0).getName())) {
+                    product.sell(order.countNonePromotionQuantity());
+                }
+            }
+            return order;
         }
-        return new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
+        Order order = new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
+        // sellProduct(order, matchProducts.get(0).getName());
+        return order;
+    }
+
+    public static void sellProduct(List<Order> orders) {
+
+        for (Order order : orders) {
+            int promotionQuantity = order.countPromotionQuantity();
+            int nonePromotionQuantity = order.countNonePromotionQuantity();
+            String productName = order.getNonePromotionProduct().getName();
+
+            for (Product product : products) {
+                if (product.getName().equals(productName) && product.getPromotion() == null) {
+                    product.sell(nonePromotionQuantity);
+                }
+                if (product.getName().equals(productName) && product.getPromotion() != null) {
+                    product.sell(promotionQuantity);
+                }
+            }
+        }
+//        int promotionQuantity = order.countPromotionQuantity();
+//        int nonePromotionQuantity = order.countNonePromotionQuantity();
+//        for (Product product : products) {
+//            if (product.getName().equals(productName) && product.getPromotion() == null) {
+//                product.sell(nonePromotionQuantity);
+//            }
+//            if (product.getName().equals(productName) && product.getPromotion() != null) {
+//                product.sell(promotionQuantity);
+//            }
+//        }
     }
 }
