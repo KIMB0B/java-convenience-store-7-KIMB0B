@@ -1,5 +1,7 @@
 package store;
 
+import camp.nextstep.edu.missionutils.DateTimes;
+
 public class Order {
     private Product promotionProduct = null;
     private final Product nonePromotionProduct;
@@ -33,6 +35,9 @@ public class Order {
 
     public int countPromotionQuantity() {
         if (promotionProduct == null) {
+            return 0;
+        }
+        if (!promotionProduct.getPromotion().isPromotion(DateTimes.now())) {
             return 0;
         }
         int minValue = Math.min(this.promotionProduct.getQuantity(), this.quantity);

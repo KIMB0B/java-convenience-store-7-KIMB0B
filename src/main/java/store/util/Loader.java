@@ -3,7 +3,7 @@ package store.util;
 import store.Product;
 import store.Promotion;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class Loader {
         List<Promotion> promotions = new ArrayList<>();
 
         for (String[] record : records) {
-            promotions.add(new Promotion(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), LocalDate.parse(record[3]), LocalDate.parse(record[4])));
+            promotions.add(new Promotion(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), LocalDateTime.parse(record[3]+"T00:00:00"), LocalDateTime.parse(record[4]+"T23:59:59")));
         }
 
         return promotions;
