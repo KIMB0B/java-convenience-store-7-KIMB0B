@@ -18,14 +18,20 @@ public class Application {
     static List<Product> products = Loader.loadProducts(FileLoader.loadFile(productFilePath), promotions);
 
     public static void main(String[] args) {
-        OutputView.printProducts(products);
-        Map<String, Integer> buyingItems = InputView.readItem();
+        boolean oneMore = true;
 
-        boolean isMembership = InputView.readMembership().equalsIgnoreCase("Y");
+        while (oneMore) {
+            OutputView.printProducts(products);
+            Map<String, Integer> buyingItems = InputView.readItem();
 
-        List<Order> orders = setOrders(buyingItems, isMembership);
-        System.out.println(orders);
-        OutputView.printReceipt(orders);
+            boolean isMembership = InputView.readMembership().equalsIgnoreCase("Y");
+
+            List<Order> orders = setOrders(buyingItems, isMembership);
+
+            OutputView.printReceipt(orders);
+
+            oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
+        }
     }
 
     public static List<Order> setOrders(Map<String, Integer> buyingItems, boolean isMembership) {

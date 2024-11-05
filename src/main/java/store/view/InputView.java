@@ -31,4 +31,11 @@ public class InputView {
         System.out.println();
         return input;
     }
+
+    public static String readOneMore() {
+        System.out.println("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)");
+        String input = Console.readLine().trim();
+        System.out.println();
+        return input;
+    }
 }
