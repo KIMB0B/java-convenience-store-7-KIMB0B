@@ -18,5 +18,7 @@ public class Application {
 
         OutputView.printProducts(products);
         Map<String, Integer> buyingItems = InputView.readItem();
+
+        boolean isMembership = InputView.readMembership().equalsIgnoreCase("Y");
     }
 }

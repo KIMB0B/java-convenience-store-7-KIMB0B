@@ -2,7 +2,6 @@ package store.view;
 
 import camp.nextstep.edu.missionutils.Console;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,7 +21,14 @@ public class InputView {
             }
             items.put(itemName, Integer.parseInt(itemQuantity));
         }
-
+        System.out.println();
         return items;
+    }
+
+    public static String readMembership() {
+        System.out.println("멤버십 할인을 받으시겠습니까? (Y/N)");
+        String input = Console.readLine().trim();
+        System.out.println();
+        return input;
     }
 }
