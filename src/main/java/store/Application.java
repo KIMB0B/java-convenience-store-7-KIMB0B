@@ -5,6 +5,7 @@ import store.util.Loader;
 import store.view.InputView;
 import store.view.OutputView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,22 +23,31 @@ public class Application {
 
         boolean isMembership = InputView.readMembership().equalsIgnoreCase("Y");
 
+        List<Order> orders = setOrders(buyingItems, isMembership);
+        System.out.println(orders);
+        OutputView.printReceipt(orders);
+    }
+
+    public static List<Order> setOrders(Map<String, Integer> buyingItems, boolean isMembership) {
+        List<Order> orders = new ArrayList<>();
+
         for (Map.Entry<String, Integer> item : buyingItems.entrySet()) {
-            Order order = null;
             List<Product> matchProducts = products.stream().filter(p -> p.getName().equals(item.getKey())).toList();
             if (matchProducts.isEmpty()) {
-                System.out.println("존재하지 않는 상품입니다.");
-                return;
+                return null;
             }
             if (matchProducts.size() > 1 && matchProducts.get(0).getPromotion() == null) {
-                return;
+                return null;
             }
-            if (matchProducts.size() == 1) {
-                order = new Order(matchProducts.getFirst(), item.getValue(), isMembership);
-            }
-            if (order == null) {
-                order = new Order(matchProducts.get(0), matchProducts.get(1), item.getValue(), isMembership);
-            }
+            orders.add(setOrder(matchProducts, item.getValue(), isMembership));
         }
+        return orders;
+    }
+
+    public static Order setOrder(List<Product> matchProducts, int quantity, boolean isMembership) {
+        if (matchProducts.size() == 1) {
+            return new Order(matchProducts.getFirst(), quantity, isMembership);
+        }
+        return new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
     }
 }

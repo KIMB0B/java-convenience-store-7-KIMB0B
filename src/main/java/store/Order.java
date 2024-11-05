@@ -23,11 +23,23 @@ public class Order {
         return nonePromotionProducts;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
     public int countPromotionQuantity() {
         if (promotionPruoduct == null) {
             return 0;
         }
-        return Math.min(promotionPruoduct.getQuantity(), this.quantity);
+        int minValue = Math.min(this.promotionPruoduct.getQuantity(), this.quantity);
+        return minValue / (promotionPruoduct.getPromotion().getGet() + promotionPruoduct.getPromotion().getBuy()) * (promotionPruoduct.getPromotion().getBuy() + promotionPruoduct.getPromotion().getGet());
+    }
+
+    public int countFreeItem() {
+        if (promotionPruoduct == null) {
+            return 0;
+        }
+        return countPromotionQuantity() / (promotionPruoduct.getPromotion().getBuy() + promotionPruoduct.getPromotion().getGet()) * promotionPruoduct.getPromotion().getGet();
     }
 
     public int countNonePromotionQuantity() {
@@ -38,7 +50,7 @@ public class Order {
         if (promotionPruoduct == null) {
             return 0;
         }
-        return countPromotionQuantity() / promotionPruoduct.getPromotion().getBuy() * promotionPruoduct.getPromotion().getGet() * promotionPruoduct.getPrice();
+        return countFreeItem() * promotionPruoduct.getPrice();
     }
 
     public int membershipDiscount() {
@@ -48,7 +60,11 @@ public class Order {
         return (int) (nonePromotionProducts.getPrice() * countNonePromotionQuantity() * 0.3);
     }
 
+    public int totalUseMoney() {
+        return this.quantity * this.nonePromotionProducts.getPrice();
+    }
+
     public int calculatePrice() {
-        return this.quantity * this.nonePromotionProducts.getPrice() - promotionDiscount() - membershipDiscount();
+        return totalUseMoney() - promotionDiscount() - membershipDiscount();
     }
 }
