@@ -20,4 +20,12 @@ public class Promotion {
     public Object getName() {
         return name;
     }
+
+    public int getBuy() {
+        return buy;
+    }
+
+    public int getGet() {
+        return get;
+    }
 }
