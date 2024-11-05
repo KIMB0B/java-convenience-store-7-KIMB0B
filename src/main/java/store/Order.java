@@ -5,7 +5,7 @@ import camp.nextstep.edu.missionutils.DateTimes;
 public class Order {
     private Product promotionProduct = null;
     private final Product nonePromotionProduct;
-    private final int quantity;
+    private int quantity;
     private final boolean isMembership;
 
     public Order(Product nonePromotionProduct, int quantity, boolean isMembership) {
@@ -51,6 +51,13 @@ public class Order {
         return countPromotionQuantity() / (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet()) * promotionProduct.getPromotion().getGet();
     }
 
+    public int canRecieveItem() {
+        if (this.quantity - countPromotionQuantity() > 0) {
+            return promotionProduct.getPromotion().getGet();
+        }
+        return 0;
+    }
+
     public int countNonePromotionQuantity() {
         return this.quantity - countPromotionQuantity();
     }
@@ -75,5 +82,9 @@ public class Order {
 
     public int calculatePrice() {
         return totalUseMoney() - promotionDiscount() - membershipDiscount();
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
     }
 }

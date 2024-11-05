@@ -32,6 +32,13 @@ public class InputView {
         return input;
     }
 
+    public static String readBuyMore(String name, int count) {
+        System.out.printf("현재 %s은(는) %d개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n", name, count);
+        String input = Console.readLine().trim();
+        System.out.println();
+        return input;
+    }
+
     public static String readOneMore() {
         System.out.println("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)");
         String input = Console.readLine().trim();

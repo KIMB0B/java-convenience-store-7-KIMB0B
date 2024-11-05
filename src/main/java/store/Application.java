@@ -63,6 +63,11 @@ public class Application {
             return order;
         }
         Order order = new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
+        if (order.canRecieveItem() > 0) {
+            if (InputView.readBuyMore(matchProducts.getFirst().getName(), order.canRecieveItem()).equals("Y")) {
+                order.addQuantity(order.canRecieveItem());
+            }
+        }
         return order;
     }
 
