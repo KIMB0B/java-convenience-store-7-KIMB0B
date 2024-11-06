@@ -17,9 +17,9 @@ public class Application {
     static List<Promotion> promotions = Loader.loadPromitions(FileLoader.loadFile(promotionFilePath));
     static List<Product> products = Loader.loadProducts(FileLoader.loadFile(productFilePath), promotions);
 
-    public static void main(String[] args) {
-        boolean oneMore = true;
+    static boolean oneMore = true;
 
+    public static void main(String[] args) {
         while (oneMore) {
             OutputView.printProducts(products);
             Map<String, Integer> buyingItems = InputView.readItem();
@@ -32,7 +32,9 @@ public class Application {
 
             sellProduct(orders);
 
-            oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
+            if (oneMore == true) {
+                oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
+            }
         }
     }
 
@@ -64,8 +66,14 @@ public class Application {
         }
         Order order = new Order(matchProducts.get(0), matchProducts.get(1), quantity, isMembership);
         if (order.canRecieveItem() > 0) {
-            if (InputView.readBuyMore(matchProducts.getFirst().getName(), order.canRecieveItem()).equals("Y")) {
-                order.addQuantity(order.canRecieveItem());
+            if (InputView.readBuyMore(matchProducts.getFirst().getName(), order.canRecieveItem()).equals("N")) {
+                return order;
+            }
+            order.addQuantity(order.canRecieveItem());
+        }
+        if (order.cantPromotionQuantity() > 0) {
+            if (InputView.readCantPromotion(matchProducts.getFirst().getName(), order.cantPromotionQuantity()).equals("Y")) {
+                return order;
             }
         }
         return order;

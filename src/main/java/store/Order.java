@@ -58,6 +58,10 @@ public class Order {
         return 0;
     }
 
+    public int cantPromotionQuantity() {
+        return this.quantity - countPromotionQuantity();
+    }
+
     public int countNonePromotionQuantity() {
         return this.quantity - countPromotionQuantity();
     }

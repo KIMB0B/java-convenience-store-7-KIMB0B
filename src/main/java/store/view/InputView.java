@@ -45,4 +45,11 @@ public class InputView {
         System.out.println();
         return input;
     }
+
+    public static String readCantPromotion(String name, int count) {
+        System.out.printf("현재 %s %d개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n", name, count);
+        String input = Console.readLine().trim();
+        System.out.println();
+        return input;
+    }
 }
