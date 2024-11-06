@@ -29,7 +29,7 @@ public class OutputView {
     public static void printReceipt(List<Order> orders) {
         System.out.println("===========W 편의점=============\n상품명\t\t수량\t\t금액");
         for (Order order : orders) {
-            System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.getQuantity() + "\t" + String.format("%,d", order.getNonePromotionProduct().getPrice()));
+            System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.getQuantity() + "\t" + String.format("%,d", order.totalUseMoney()));
         }
         System.out.println("===========증\t정=============");
         for (Order order : orders) {
