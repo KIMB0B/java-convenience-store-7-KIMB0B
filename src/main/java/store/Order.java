@@ -6,19 +6,17 @@ public class Order {
     private Product promotionProduct = null;
     private final Product nonePromotionProduct;
     private int quantity;
-    private final boolean isMembership;
+    private boolean isMembership = false;
 
-    public Order(Product nonePromotionProduct, int quantity, boolean isMembership) {
+    public Order(Product nonePromotionProduct, int quantity) {
         this.nonePromotionProduct = nonePromotionProduct;
         this.quantity = quantity;
-        this.isMembership = isMembership;
     }
 
-    public Order(Product promotionProduct, Product nonePromotionProduct, int quantity, boolean isMembership) {
+    public Order(Product promotionProduct, Product nonePromotionProduct, int quantity) {
         this.promotionProduct = promotionProduct;
         this.nonePromotionProduct = nonePromotionProduct;
         this.quantity = quantity;
-        this.isMembership = isMembership;
     }
 
     public Product getPromotionProduct() {
@@ -90,5 +88,9 @@ public class Order {
 
     public void addQuantity(int quantity) {
         this.quantity += quantity;
+    }
+
+    public void setMembership() {
+        this.isMembership = true;
     }
 }
