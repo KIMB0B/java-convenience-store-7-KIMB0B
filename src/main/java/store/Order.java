@@ -52,7 +52,7 @@ public class Order {
     }
 
     public int canRecieveItem() {
-        if (this.quantity - countPromotionQuantity() > 0) {
+        if ((this.quantity + promotionProduct.getPromotion().getGet()) % (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet()) == 0) {
             return promotionProduct.getPromotion().getGet();
         }
         return 0;

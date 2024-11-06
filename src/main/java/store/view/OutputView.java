@@ -42,5 +42,6 @@ public class OutputView {
         System.out.println("행사할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::promotionDiscount).sum()));
         System.out.println("멤버십할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::membershipDiscount).sum()));
         System.out.println("내실돈\t\t\t\t\t" + String.format("%,d", orders.stream().mapToInt(Order::calculatePrice).sum()));
+        System.out.println();
     }
 }
