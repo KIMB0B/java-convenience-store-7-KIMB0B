@@ -14,6 +14,7 @@ public class PromotionService {
     }
 
     public void loadByMarkdown(String filePath) {
+        promotionRepository.clear();
         List<String[]> records = FileLoader.loadFile(filePath);
         for (String[] record : records) {
             promotionRepository.add(new Promotion(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), LocalDateTime.parse(record[3]+"T00:00:00"), LocalDateTime.parse(record[4]+"T23:59:59")));

@@ -37,4 +37,8 @@ public class ProductRepository {
     public List<Product> getAllProducts() {
         return new ArrayList<>(products);
     }
+
+    public void clear() {
+        products.clear();
+    }
 }

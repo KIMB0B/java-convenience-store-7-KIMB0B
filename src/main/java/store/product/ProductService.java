@@ -19,6 +19,7 @@ public class ProductService {
     }
 
     public void loadByMarkdown(String filePath) {
+        productRepository.clear();
         Product beforeProduct = new Product("", 0, 0, null);
         List<String[]> records = FileLoader.loadFile(filePath);
 

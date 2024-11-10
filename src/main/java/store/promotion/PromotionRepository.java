@@ -21,4 +21,8 @@ public class PromotionRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void clear() {
+        promotions.clear();
+    }
 }

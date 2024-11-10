@@ -18,16 +18,17 @@ public class OrderService {
     }
 
     public void addOrdersByItemMap(Map<String, Integer> buyingItems) {
+        clear();
         for (Map.Entry<String, Integer> item : buyingItems.entrySet()) {
             List<Product> matchingProducts = productService.findProductsByName(item.getKey());
-            validateMatchingProducts(matchingProducts, item.getValue());
+            validateMatchingProducts(matchingProducts);
             orderRepository.add(createOrder(matchingProducts, item.getValue()));
         }
 
         applyMembershipDiscount();
     }
 
-    public void validateMatchingProducts(List<Product> matchingProducts, int quantity) {
+    public void validateMatchingProducts(List<Product> matchingProducts) {
         if (matchingProducts.isEmpty()) {
             ErrorHandler.nonExistentProductError();
         }

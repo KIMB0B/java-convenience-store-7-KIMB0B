@@ -30,8 +30,8 @@ public class Application {
             try {
                 orderService.addOrdersByItemMap(buyingItems);
                 productService.updateProductsQuantity();
-                orderService.clear();
                 OutputView.printReceipt();
+                orderService.clear();
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 continue;
