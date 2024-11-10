@@ -23,7 +23,7 @@ public class Loader {
         Product beforeProduct = new Product("", 0, 0, null);
 
         for (String[] record : records) {
-            Promotion promotion = findPromotionByName(promotions, record[2]);
+            Promotion promotion = findPromotionByName(promotions, record[3]);
             addProduct(products, record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion, beforeProduct);
             beforeProduct.setProduct(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion);
         }
@@ -48,7 +48,7 @@ public class Loader {
     }
 
     private static void checkLastRecord(List<Product> products, List<Promotion> promotions, String[] lastRecord) {
-        if (findPromotionByName(promotions, lastRecord[2]) != null) {
+        if (findPromotionByName(promotions, lastRecord[3]) != null) {
             products.add(new Product(lastRecord[0], Integer.parseInt(lastRecord[1]), 0, null));
         }
     }
