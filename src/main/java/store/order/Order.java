@@ -1,6 +1,7 @@
-package store;
+package store.order;
 
 import camp.nextstep.edu.missionutils.DateTimes;
+import store.product.Product;
 
 public class Order {
     private Product promotionProduct = null;
@@ -17,10 +18,6 @@ public class Order {
         this.promotionProduct = promotionProduct;
         this.nonePromotionProduct = nonePromotionProduct;
         this.quantity = quantity;
-    }
-
-    public Product getPromotionProduct() {
-        return promotionProduct;
     }
 
     public Product getNonePromotionProduct() {
@@ -42,6 +39,10 @@ public class Order {
         return minValue / (promotionProduct.getPromotion().getGet() + promotionProduct.getPromotion().getBuy()) * (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet());
     }
 
+    public int countNonePromotionQuantity() {
+        return this.quantity - countPromotionQuantity();
+    }
+
     public int countFreeItem() {
         if (promotionProduct == null) {
             return 0;
@@ -57,10 +58,9 @@ public class Order {
     }
 
     public int cantPromotionQuantity() {
-        return this.quantity - countPromotionQuantity();
-    }
-
-    public int countNonePromotionQuantity() {
+        if (!promotionProduct.getPromotion().isPromotion(DateTimes.now())) {
+            return 0;
+        }
         return this.quantity - countPromotionQuantity();
     }
 
@@ -88,6 +88,10 @@ public class Order {
 
     public void addQuantity(int quantity) {
         this.quantity += quantity;
+    }
+
+    public void removeQuantity(int quantity) {
+        this.quantity -= quantity;
     }
 
     public void setMembership() {

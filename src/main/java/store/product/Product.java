@@ -1,4 +1,6 @@
-package store;
+package store.product;
+
+import store.promotion.Promotion;
 
 public class Product {
     private String name;
@@ -42,5 +44,9 @@ public class Product {
         }
         this.quantity -= quantity;
         return true;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

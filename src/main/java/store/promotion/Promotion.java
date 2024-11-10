@@ -1,4 +1,4 @@
-package store;
+package store.promotion;
 
 import java.time.LocalDateTime;
 

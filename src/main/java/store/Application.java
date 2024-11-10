@@ -1,12 +1,11 @@
 package store;
 
-import store.util.FileLoader;
-import store.util.Loader;
+import store.order.OrderService;
+import store.product.ProductService;
+import store.promotion.PromotionService;
 import store.view.InputView;
 import store.view.OutputView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Application {
@@ -14,96 +13,27 @@ public class Application {
     static final String promotionFilePath = "src/main/resources/promotions.md";
     static final String productFilePath = "src/main/resources/products.md";
 
-    static List<Promotion> promotions = Loader.loadPromitions(FileLoader.loadFile(promotionFilePath));
-    static List<Product> products = Loader.loadProducts(FileLoader.loadFile(productFilePath), promotions);
+    static final PromotionService promotionService = PromotionService.getInstance();
+    static final ProductService productService = ProductService.getInstance();
+    static final OrderService orderService = OrderService.getInstance();
 
     static boolean oneMore = true;
 
     public static void main(String[] args) {
+        promotionService.loadByMarkdown(promotionFilePath);
+        productService.loadByMarkdown(productFilePath);
+
         while (oneMore) {
-            OutputView.printProducts(products);
+            OutputView.printProducts();
             Map<String, Integer> buyingItems = InputView.readItem();
 
-            List<Order> orders = createOrders(buyingItems);
-
-            OutputView.printReceipt(orders);
-
-            updateProductsQuantity(orders);
+            orderService.addOrdersByItemMap(buyingItems);
+            OutputView.printReceipt();
+            productService.updateProductsQuantity();
+            orderService.clear();
 
             if (oneMore) {
                 oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
-            }
-        }
-    }
-
-    public static List<Order> createOrders(Map<String, Integer> buyingItems) {
-        List<Order> orders = new ArrayList<>();
-
-        for (Map.Entry<String, Integer> item : buyingItems.entrySet()) {
-            List<Product> matchingProducts = products.stream().filter(p -> p.getName().equals(item.getKey())).toList();
-            if (matchingProducts.isEmpty()) {
-                return null;
-            }
-            if (matchingProducts.size() > 1 && matchingProducts.getFirst().getPromotion() == null) {
-                return null;
-            }
-            orders.add(createOrder(matchingProducts, item.getValue()));
-        }
-
-        applyMembershipDiscount(orders);
-        return orders;
-    }
-
-    public static Order createOrder(List<Product> matchingProducts, int quantity) {
-        if (matchingProducts.size() == 1) {
-            return createSingleOrder(matchingProducts.getFirst(), quantity);
-        }
-        return createPromotionOrder(matchingProducts, quantity);
-    }
-
-    private static Order createSingleOrder(Product product, int quantity) {
-        Order order = new Order(product, quantity);
-        product.sell(order.countNonePromotionQuantity());
-        return order;
-    }
-
-    private static Order createPromotionOrder(List<Product> matchingProducts, int quantity) {
-        Order order = new Order(matchingProducts.get(0), matchingProducts.get(1), quantity);
-        if (order.canRecieveItem() > 0) {
-            if (InputView.readBuyMore(matchingProducts.getFirst().getName(), order.canRecieveItem()).equals("N")) {
-                return order;
-            }
-            order.addQuantity(order.canRecieveItem());
-        }
-        if (order.cantPromotionQuantity() > 0) {
-            if (InputView.readCantPromotion(matchingProducts.getFirst().getName(), order.cantPromotionQuantity()).equals("Y")) {
-                return order;
-            }
-        }
-        return order;
-    }
-
-    private static void applyMembershipDiscount(List<Order> orders) {
-        if (InputView.readMembership().equalsIgnoreCase("Y")) {
-            for (Order order : orders) {
-                order.setMembership();
-            }
-        }
-    }
-
-    public static void updateProductsQuantity(List<Order> orders) {
-        for (Order order : orders) {
-            int promotionQuantity = order.countPromotionQuantity();
-            int nonePromotionQuantity = order.countNonePromotionQuantity();
-            String productName = order.getNonePromotionProduct().getName();
-
-            for (Product product : products) {
-                if (product.getName().equals(productName) && product.getPromotion() == null) {
-                    product.sell(nonePromotionQuantity);
-                }
-                if (product.getName().equals(productName) && product.getPromotion() != null) {
-                    product.sell(promotionQuantity);
-                }
             }
         }
     }
