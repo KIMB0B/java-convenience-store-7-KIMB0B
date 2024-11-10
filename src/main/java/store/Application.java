@@ -29,9 +29,9 @@ public class Application {
 
             try {
                 orderService.addOrdersByItemMap(buyingItems);
-                OutputView.printReceipt();
                 productService.updateProductsQuantity();
                 orderService.clear();
+                OutputView.printReceipt();
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 continue;
