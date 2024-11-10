@@ -20,16 +20,20 @@ public class OrderService {
     public void addOrdersByItemMap(Map<String, Integer> buyingItems) {
         for (Map.Entry<String, Integer> item : buyingItems.entrySet()) {
             List<Product> matchingProducts = productService.findProductsByName(item.getKey());
-            if (matchingProducts.isEmpty()) {
-                ErrorHandler.nonExistentProductError();
-            }
-            if (matchingProducts.size() > 1 && matchingProducts.getFirst().getPromotion() == null) {
-                ErrorHandler.generalInputError();
-            }
+            validateMatchingProducts(matchingProducts, item.getValue());
             orderRepository.add(createOrder(matchingProducts, item.getValue()));
         }
 
         applyMembershipDiscount();
+    }
+
+    public void validateMatchingProducts(List<Product> matchingProducts, int quantity) {
+        if (matchingProducts.isEmpty()) {
+            ErrorHandler.nonExistentProductError();
+        }
+        if (matchingProducts.size() > 1 && matchingProducts.getFirst().getPromotion() == null) {
+            ErrorHandler.generalInputError();
+        }
     }
 
     public List<Order> findAll() {

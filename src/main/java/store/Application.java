@@ -27,10 +27,15 @@ public class Application {
             OutputView.printProducts();
             Map<String, Integer> buyingItems = InputView.readItem();
 
-            orderService.addOrdersByItemMap(buyingItems);
-            OutputView.printReceipt();
-            productService.updateProductsQuantity();
-            orderService.clear();
+            try {
+                orderService.addOrdersByItemMap(buyingItems);
+                OutputView.printReceipt();
+                productService.updateProductsQuantity();
+                orderService.clear();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
 
             if (oneMore) {
                 oneMore = InputView.readOneMore().equalsIgnoreCase("Y");
