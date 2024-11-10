@@ -1,10 +1,10 @@
 package store;
 
 public class Product {
-    private final String name;
-    private final int price;
+    private String name;
+    private int price;
     private int quantity;
-    private final Promotion promotion;
+    private Promotion promotion;
 
     public Product(String name, int price, int quantity, Promotion promotion) {
         this.name = name;
@@ -27,6 +27,13 @@ public class Product {
 
     public Promotion getPromotion() {
         return promotion;
+    }
+
+    public void setProduct(String name, int price, int quantity, Promotion promotion) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.promotion = promotion;
     }
 
     public boolean sell(int quantity) {

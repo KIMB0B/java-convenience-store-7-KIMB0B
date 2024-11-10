@@ -20,26 +20,36 @@ public class Loader {
 
     public static List<Product> loadProducts(List<String[]> records, List<Promotion> promotions) {
         List<Product> products = new ArrayList<>();
-
-        String beforeName = "";
-        int beforePrice = 0;
-        Promotion beforePromotion = null;
+        Product beforeProduct = new Product("", 0, 0, null);
 
         for (String[] record : records) {
-            if (beforePromotion != null && !beforeName.equals(record[0])) {
-                products.add(new Product(beforeName, beforePrice, 0, null));
-            }
-            Promotion promotion = promotions.stream().filter(p -> p.getName().equals(record[3])).findFirst().orElse(null);
-            products.add(new Product(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion));
-            if (record == records.get(records.size() - 1) && promotion != null) {
-                products.add(new Product(record[0], Integer.parseInt(record[1]), 0, null));
-                return products;
-            }
-            beforeName = record[0];
-            beforePrice = Integer.parseInt(record[1]);
-            beforePromotion = promotion;
+            Promotion promotion = findPromotionByName(promotions, record[2]);
+            addProduct(products, record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion, beforeProduct);
+            beforeProduct.setProduct(record[0], Integer.parseInt(record[1]), Integer.parseInt(record[2]), promotion);
         }
+        checkLastRecord(products, promotions, records.getLast());
 
         return products;
+    }
+
+    private static void addProduct(List<Product> products, String name, int price, int quantity, Promotion promotion, Product beforeProduct) {
+        if (beforeProduct.getPromotion() != null && !beforeProduct.getName().equals(name)) {
+            products.add(new Product(beforeProduct.getName(), beforeProduct.getPrice(), 0, null));
+        }
+
+        products.add(new Product(name, price, quantity, promotion));
+    }
+
+    private static Promotion findPromotionByName(List<Promotion> promotions, String promotionName) {
+        return promotions.stream()
+                .filter(p -> p.getName().equals(promotionName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static void checkLastRecord(List<Product> products, List<Promotion> promotions, String[] lastRecord) {
+        if (findPromotionByName(promotions, lastRecord[2]) != null) {
+            products.add(new Product(lastRecord[0], Integer.parseInt(lastRecord[1]), 0, null));
+        }
     }
 }
