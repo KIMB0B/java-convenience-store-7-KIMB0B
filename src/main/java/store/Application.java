@@ -20,8 +20,8 @@ public class Application {
     public static void main(String[] args) {
         promotionService.loadByMarkdown(promotionFilePath);
         productService.loadByMarkdown(productFilePath);
-
         boolean oneMore = true;
+
         while (oneMore) {
             OutputView.printProducts();
             Map<String, Integer> buyingItems = InputView.readItem();
@@ -33,6 +33,10 @@ public class Application {
                 orderService.clear();
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                continue;
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+                oneMore = false;
                 continue;
             }
 

@@ -30,7 +30,7 @@ public class OrderService {
 
     public void validateMatchingProducts(List<Product> matchingProducts) {
         if (matchingProducts.isEmpty()) {
-            ErrorHandler.nonExistentProductError();
+            ErrorHandler.invalidStateError();
         }
         if (matchingProducts.size() > 1 && matchingProducts.getFirst().getPromotion() == null) {
             ErrorHandler.generalInputError();
