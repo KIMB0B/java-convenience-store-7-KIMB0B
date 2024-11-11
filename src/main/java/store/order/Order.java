@@ -28,7 +28,7 @@ public class Order {
         return quantity;
     }
 
-    public int countPromotionQuantity() {
+    public int promotionalQuantityCount() {
         if (promotionProduct == null) {
             return 0;
         }
@@ -39,51 +39,50 @@ public class Order {
         return minValue / (promotionProduct.getPromotion().getGet() + promotionProduct.getPromotion().getBuy()) * (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet());
     }
 
-    public int countNonePromotionQuantity() {
-        return this.quantity - countPromotionQuantity();
-    }
-
-    public int countFreeItem() {
+    public int nonePromotionalQuantityCount() {
         if (promotionProduct == null) {
             return 0;
         }
-        return countPromotionQuantity() / (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet()) * promotionProduct.getPromotion().getGet();
+        if (!promotionProduct.getPromotion().isPromotion(DateTimes.now())) {
+            return 0;
+        }
+        return this.quantity - promotionalQuantityCount();
     }
 
-    public int canRecieveItem() {
+    public int freeItemCount() {
+        if (promotionProduct == null) {
+            return 0;
+        }
+        return promotionalQuantityCount() / (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet()) * promotionProduct.getPromotion().getGet();
+    }
+
+    public int additionalItemCount() {
         if ((this.quantity + promotionProduct.getPromotion().getGet()) % (promotionProduct.getPromotion().getBuy() + promotionProduct.getPromotion().getGet()) == 0) {
             return promotionProduct.getPromotion().getGet();
         }
         return 0;
     }
 
-    public int cantPromotionQuantity() {
-        if (!promotionProduct.getPromotion().isPromotion(DateTimes.now())) {
-            return 0;
-        }
-        return this.quantity - countPromotionQuantity();
-    }
-
-    public int promotionDiscount() {
+    public int promotionDiscountPrice() {
         if (promotionProduct == null) {
             return 0;
         }
-        return countFreeItem() * promotionProduct.getPrice();
+        return freeItemCount() * promotionProduct.getPrice();
     }
 
-    public int membershipDiscount() {
+    public int membershipDiscountPrice() {
         if (!isMembership) {
             return 0;
         }
-        return (int) (nonePromotionProduct.getPrice() * countNonePromotionQuantity() * 0.3);
+        return (int) (nonePromotionProduct.getPrice() * nonePromotionalQuantityCount() * 0.3);
     }
 
-    public int totalUseMoney() {
+    public int totalUsePrice() {
         return this.quantity * this.nonePromotionProduct.getPrice();
     }
 
-    public int calculatePrice() {
-        return totalUseMoney() - promotionDiscount() - membershipDiscount();
+    public int finalCalculatePrice() {
+        return totalUsePrice() - promotionDiscountPrice() - membershipDiscountPrice();
     }
 
     public void addQuantity(int quantity) {

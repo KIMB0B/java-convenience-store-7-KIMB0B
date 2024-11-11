@@ -42,15 +42,15 @@ public class OutputView {
     private static void printReceiptHeader() {
         System.out.println("===========W 편의점=============\n상품명\t\t수량\t\t금액");
         for (Order order : orderService.findAll()) {
-            System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.getQuantity() + "\t" + String.format("%,d", order.totalUseMoney()));
+            System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.getQuantity() + "\t" + String.format("%,d", order.totalUsePrice()));
         }
     }
 
     private static void printFreeGift() {
         System.out.println("============증정==============");
         for (Order order : orderService.findAll()) {
-            if (order.countPromotionQuantity() > 0) {
-                System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.countFreeItem());
+            if (order.promotionalQuantityCount() > 0) {
+                System.out.println(order.getNonePromotionProduct().getName() + "\t\t\t" + order.freeItemCount());
             }
         }
     }
@@ -59,10 +59,10 @@ public class OutputView {
         List<Order> orders = orderService.findAll();
 
         System.out.println("==============================");
-        System.out.println("총구매액\t\t\t" + orders.stream().mapToInt(Order::getQuantity).sum() + "\t\t" + String.format("%,d", orders.stream().mapToInt(Order::totalUseMoney).sum()));
-        System.out.println("행사할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::promotionDiscount).sum()));
-        System.out.println("멤버십할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::membershipDiscount).sum()));
-        System.out.println("내실돈\t\t\t\t\t" + String.format("%,d", orders.stream().mapToInt(Order::calculatePrice).sum()));
+        System.out.println("총구매액\t\t\t" + orders.stream().mapToInt(Order::getQuantity).sum() + "\t\t" + String.format("%,d", orders.stream().mapToInt(Order::totalUsePrice).sum()));
+        System.out.println("행사할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::promotionDiscountPrice).sum()));
+        System.out.println("멤버십할인\t\t\t\t\t-" + String.format("%,d", orders.stream().mapToInt(Order::membershipDiscountPrice).sum()));
+        System.out.println("내실돈\t\t\t\t\t" + String.format("%,d", orders.stream().mapToInt(Order::finalCalculatePrice).sum()));
         System.out.println();
     }
 }

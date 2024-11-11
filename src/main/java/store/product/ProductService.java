@@ -42,7 +42,7 @@ public class ProductService {
     public void updateProductsQuantity() {
         for (Order order : orderService.findAll()) {
             for (Product product : findProductsByName(order.getNonePromotionProduct().getName())) {
-                updateProductQuantity(product, order.countPromotionQuantity(), order.countNonePromotionQuantity());
+                updateProductQuantity(product, order.promotionalQuantityCount(), order.nonePromotionalQuantityCount());
             }
         }
     }
