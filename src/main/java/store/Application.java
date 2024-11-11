@@ -17,12 +17,11 @@ public class Application {
     static final ProductService productService = ProductService.getInstance();
     static final OrderService orderService = OrderService.getInstance();
 
-    static boolean oneMore = true;
-
     public static void main(String[] args) {
         promotionService.loadByMarkdown(promotionFilePath);
         productService.loadByMarkdown(productFilePath);
 
+        boolean oneMore = true;
         while (oneMore) {
             OutputView.printProducts();
             Map<String, Integer> buyingItems = InputView.readItem();
