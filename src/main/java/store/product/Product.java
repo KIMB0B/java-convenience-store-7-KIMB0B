@@ -1,5 +1,6 @@
 package store.product;
 
+import store.exception.ErrorHandler;
 import store.promotion.Promotion;
 
 public class Product {
@@ -38,15 +39,10 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public boolean sell(int quantity) {
-        if (this.quantity < quantity) {
-            return false;
-        }
-        this.quantity -= quantity;
-        return true;
-    }
-
     public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            ErrorHandler.quantityExceedsStockError();
+        }
         this.quantity = quantity;
     }
 }

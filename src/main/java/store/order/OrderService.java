@@ -65,7 +65,7 @@ public class OrderService {
 
     private Order createSingleOrder(Product product, int quantity) {
         Order order = new Order(product, quantity);
-        product.sell(order.nonePromotionalQuantityCount());
+        product.setQuantity(product.getQuantity() - order.nonePromotionalQuantityCount());
         return order;
     }
 

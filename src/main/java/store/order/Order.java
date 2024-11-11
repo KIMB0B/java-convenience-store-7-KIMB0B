@@ -74,6 +74,9 @@ public class Order {
         if (!isMembership) {
             return 0;
         }
+        if (promotionProduct == null) {
+            return (int) (nonePromotionProduct.getPrice() * this.quantity * 0.3);
+        }
         return (int) (nonePromotionProduct.getPrice() * nonePromotionalQuantityCount() * 0.3);
     }
 
